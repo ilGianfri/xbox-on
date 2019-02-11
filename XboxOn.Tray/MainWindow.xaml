@@ -1,0 +1,33 @@
+﻿<Window x:Class="XboxOn.Tray.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XboxOn.Tray"
+        mc:Ignorable="d"
+        WindowStyle="ToolWindow"
+        Title="Xbox On" Height="100" Width="200" ResizeMode="NoResize">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Column="1" Content="" FontFamily="Segoe MDL2 Assets" Width="30" Click="Settings_Click"/>
+
+        <Button x:Name="OnBtn" Grid.Column="0" Click="XboxOnBtn_Click">
+            <Button.Content>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock VerticalAlignment="Center" Margin="12,0" Text="" FontFamily="Segoe MDL2 Assets" Grid.Column="0" FontSize="20" />
+                    <TextBlock Grid.Column="1" Text="Turn on Xbox"/>
+                </Grid>
+            </Button.Content>
+        </Button>
+    </Grid>
+</Window>
