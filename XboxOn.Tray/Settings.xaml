@@ -9,7 +9,7 @@
         Title="Xbox On - Settings" Height="156" Width="230" Closing="Settings_Closing" Loaded="Settings_Loaded">
     
     <StackPanel Margin="4,4">
-        <CheckBox Margin="0,4" Content="Launch minimized" Checked="LaunchMinimized_Checked" Unchecked="LaunchMinimized_Unchecked"/>
+        <CheckBox x:Name="LaunchMinimized" Margin="0,4" Content="Launch minimized" Checked="LaunchMinimized_Checked" Unchecked="LaunchMinimized_Unchecked"/>
         <TextBlock Text="Xbox Console IP"/>
         <TextBox x:Name="IPTxt"/>
         <TextBlock Margin="0,4,0,0" Text="Xbox Console Live ID"/>

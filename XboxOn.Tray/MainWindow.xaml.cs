@@ -83,7 +83,12 @@ namespace XboxOn.Tray
                 noticon.BalloonTipTitle = "Xbox On is still running";
                 noticon.BalloonTipText = "You can close the app from the system tray.";
                 noticon.ShowBalloonTip(50);
-                Properties.Settings.Default.MinimizedNotificationShown = true;
+
+                if (!Properties.Settings.Default.MinimizedNotificationShown)
+                {
+                    Properties.Settings.Default.MinimizedNotificationShown = true;
+                    Properties.Settings.Default.Save();
+                }
             }
             Hide();
         }

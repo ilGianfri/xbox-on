@@ -31,6 +31,8 @@ namespace XboxOn.Tray
 
             if (!string.IsNullOrEmpty(Properties.Settings.Default.LiveId))
                 LiveIdTxt.Text = Properties.Settings.Default.LiveId;
+
+            LaunchMinimized.IsChecked = Properties.Settings.Default.LaunchMinimized;
         }
 
         private void LaunchMinimized_Checked(object sender, RoutedEventArgs e) => 
