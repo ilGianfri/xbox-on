@@ -16,8 +16,12 @@ namespace XboxOn.Tray
         {
             InitializeComponent();
 
+            Rect desktopWorkingArea = SystemParameters.WorkArea;
+            this.Left = desktopWorkingArea.Right - this.Width;
+            this.Top = desktopWorkingArea.Bottom - this.Height;
+
             if (Properties.Settings.Default.LaunchMinimized == true)
-                Hide();
+                this.Hide();
 
             SystemTray();
         }
@@ -71,7 +75,7 @@ namespace XboxOn.Tray
         private void XboxOn_StateChanged(object sender, EventArgs e)
         {
             if (WindowState == WindowState.Minimized)
-                Hide();
+                this.Hide();
         }
 
         private void XboxOn_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -90,7 +94,7 @@ namespace XboxOn.Tray
                     Properties.Settings.Default.Save();
                 }
             }
-            Hide();
+            this.Hide();
         }
 
         private void SystemTray()
@@ -102,7 +106,7 @@ namespace XboxOn.Tray
             };
             noticon.DoubleClick += delegate (object s, EventArgs e)
             {
-                Show();
+                this.Show();
                 WindowState = WindowState.Normal;
             };
 
