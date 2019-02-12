@@ -46,5 +46,29 @@ namespace XboxOn.Tray.Properties {
                 this["LiveId"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LaunchMinimized {
+            get {
+                return ((bool)(this["LaunchMinimized"]));
+            }
+            set {
+                this["LaunchMinimized"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MinimizedNotificationShown {
+            get {
+                return ((bool)(this["MinimizedNotificationShown"]));
+            }
+            set {
+                this["MinimizedNotificationShown"] = value;
+            }
+        }
     }
 }

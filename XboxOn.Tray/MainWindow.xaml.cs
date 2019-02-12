@@ -1,33 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Forms;
 
 namespace XboxOn.Tray
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
+        private NotifyIcon noticon;
         public MainWindow()
         {
             InitializeComponent();
+
+            if (Properties.Settings.Default.LaunchMinimized == true)
+                Hide();
+
+            SystemTray();
         }
+
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
@@ -35,16 +29,14 @@ namespace XboxOn.Tray
             set.Show();
         }
 
-        private async void XboxOnBtn_Click(object sender, RoutedEventArgs e)
-        {
+        private async void XboxOnBtn_Click(object sender, RoutedEventArgs e) =>
             await XboxWake(Properties.Settings.Default.IP, Properties.Settings.Default.LiveId);
-        }
 
         public static async Task XboxWake(string ipAddress, string liveId, int retries = 5)
         {
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPAddress ip = IPAddress.Parse(ipAddress);
-            IPEndPoint sending_end_point = new IPEndPoint(ip, 5050);
+            IPEndPoint port = new IPEndPoint(ip, 5050);
 
             for (int retry = 0; retry < retries; retry++)
             {
@@ -69,11 +61,56 @@ namespace XboxOn.Tray
                     ms.Write(header, 0, header.Length);
                     ms.Write(payload, 0, payload.Length);
 
-                    socket.SendTo(ms.ToArray(), sending_end_point);
+                    socket.SendTo(ms.ToArray(), port);
                 }
 
                 await Task.Delay(1000);
             }
         }
+
+        private void XboxOn_StateChanged(object sender, EventArgs e)
+        {
+            if (WindowState == WindowState.Minimized)
+                Hide();
+        }
+
+        private void XboxOn_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+
+            if (!Properties.Settings.Default.MinimizedNotificationShown)
+            {
+                noticon.BalloonTipTitle = "Xbox On is still running";
+                noticon.BalloonTipText = "You can close the app from the system tray.";
+                noticon.ShowBalloonTip(50);
+                Properties.Settings.Default.MinimizedNotificationShown = true;
+            }
+            Hide();
+        }
+
+        private void SystemTray()
+        {
+            noticon = new NotifyIcon
+            {
+                Icon = Properties.Resources.xboxon,
+                Visible = true
+            };
+            noticon.DoubleClick += delegate (object s, EventArgs e)
+            {
+                Show();
+                WindowState = WindowState.Normal;
+            };
+
+            ContextMenuStrip strip = new ContextMenuStrip();
+            noticon.ContextMenuStrip = strip;
+
+            strip.Items.Add("Turn on XBox", null, TurnOnFromMenu);
+            strip.Items.Add("Exit", null, ExitEvent);
+        }
+
+        private void ExitEvent(object sender, EventArgs e) => Environment.Exit(0);
+
+        private async void TurnOnFromMenu(object sender, EventArgs e) => 
+            await XboxWake(Properties.Settings.Default.IP, Properties.Settings.Default.LiveId);
     }
 }

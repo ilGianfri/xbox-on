@@ -1,23 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MahApps.Metro.Controls;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace XboxOn.Tray
 {
     /// <summary>
     /// Interaction logic for Settings.xaml
     /// </summary>
-    public partial class Settings : Window
+    public partial class Settings : MetroWindow
     {
         public Settings()
         {
@@ -28,6 +17,7 @@ namespace XboxOn.Tray
         {
             if (!string.IsNullOrEmpty(IPTxt.Text))
                 Properties.Settings.Default.IP = IPTxt.Text;
+
             if (!string.IsNullOrEmpty(LiveIdTxt.Text))
                 Properties.Settings.Default.LiveId = LiveIdTxt.Text;
 
@@ -36,8 +26,17 @@ namespace XboxOn.Tray
 
         private void Settings_Loaded(object sender, RoutedEventArgs e)
         {
-            IPTxt.Text = Properties.Settings.Default.IP;
-            LiveIdTxt.Text = Properties.Settings.Default.LiveId;
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.IP))
+                IPTxt.Text = Properties.Settings.Default.IP;
+
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.LiveId))
+                LiveIdTxt.Text = Properties.Settings.Default.LiveId;
         }
+
+        private void LaunchMinimized_Checked(object sender, RoutedEventArgs e) => 
+            Properties.Settings.Default.LaunchMinimized = true;
+
+        private void LaunchMinimized_Unchecked(object sender, RoutedEventArgs e) =>
+            Properties.Settings.Default.LaunchMinimized = false;
     }
 }
