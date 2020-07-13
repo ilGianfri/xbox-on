@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using ControlzEx.Theming;
+using MahApps.Metro.Controls;
 using System;
 using System.IO;
 using System.Net;
@@ -21,7 +22,12 @@ namespace XboxOn.Tray
             this.Top = desktopWorkingArea.Bottom - this.Height;
 
             if (Properties.Settings.Default.LaunchMinimized == true)
+            {
                 this.Hide();
+            }
+
+            ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncAll;
+            ThemeManager.Current.SyncTheme();
 
             SystemTray();
         }
@@ -36,7 +42,7 @@ namespace XboxOn.Tray
         private async void XboxOnBtn_Click(object sender, RoutedEventArgs e) =>
             await XboxWake(Properties.Settings.Default.IP, Properties.Settings.Default.LiveId);
 
-        public static async Task XboxWake(string ipAddress, string liveId, int retries = 5)
+        public async Task XboxWake(string ipAddress, string liveId, int retries = 5)
         {
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPAddress ip = IPAddress.Parse(ipAddress);
@@ -49,7 +55,9 @@ namespace XboxOn.Tray
                 payload[1] = (byte)liveId.Length;
 
                 for (int i = 0; i < liveId.Length; i++)
+                {
                     payload[i + 2] = (byte)liveId[i];
+                }
                 payload[payload.Length - 1] = 0x00;
 
                 byte[] header = new byte[6];
@@ -60,7 +68,7 @@ namespace XboxOn.Tray
                 header[4] = 0x00;
                 header[5] = 0x00;
 
-                using (var ms = new MemoryStream(header.Length + payload.Length))
+                using (MemoryStream ms = new MemoryStream(header.Length + payload.Length))
                 {
                     ms.Write(header, 0, header.Length);
                     ms.Write(payload, 0, payload.Length);
@@ -119,7 +127,7 @@ namespace XboxOn.Tray
 
         private void ExitEvent(object sender, EventArgs e) => Environment.Exit(0);
 
-        private async void TurnOnFromMenu(object sender, EventArgs e) => 
+        private async void TurnOnFromMenu(object sender, EventArgs e) =>
             await XboxWake(Properties.Settings.Default.IP, Properties.Settings.Default.LiveId);
     }
 }

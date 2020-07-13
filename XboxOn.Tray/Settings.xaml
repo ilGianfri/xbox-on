@@ -9,6 +9,10 @@
         Title="Xbox On - Settings" Height="156" Width="230" Closing="Settings_Closing" Loaded="Settings_Loaded">
     
     <StackPanel Margin="4,4">
+        <!--<ComboBox x:Name="ThemeCombo" SelectionChanged="ThemeCombo_SelectionChanged" >
+            <ComboBoxItem Content="Light Theme"/>
+            <ComboBoxItem Content="Dark Theme"/>
+        </ComboBox>-->
         <CheckBox x:Name="LaunchMinimized" Margin="0,4" Content="Launch minimized" Checked="LaunchMinimized_Checked" Unchecked="LaunchMinimized_Unchecked"/>
         <TextBlock Text="Xbox Console IP"/>
         <TextBox x:Name="IPTxt"/>
