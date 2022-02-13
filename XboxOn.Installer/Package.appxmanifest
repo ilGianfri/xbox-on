@@ -9,7 +9,7 @@
   <Identity
     Name="22e5525b-ac9a-4076-af14-feb04ab77529"
     Publisher="CN=aless"
-    Version="1.0.1.0" />
+    Version="1.1.2.0" />
 
   <Properties>
     <DisplayName>Xbox On</DisplayName>
@@ -32,7 +32,7 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="Xbox On"
-        Description="Simple program to turn on a Xbox One on the local network without waiting 10 minutes for the Xbox app to load."
+        Description="Simple program to turn on an Xbox on the local network without waiting 10 minutes for the Xbox app to load."
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
