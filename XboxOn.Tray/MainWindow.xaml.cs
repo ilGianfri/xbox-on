@@ -1,6 +1,4 @@
-﻿using ControlzEx.Theming;
-using MahApps.Metro.Controls;
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -10,7 +8,7 @@ using System.Windows.Forms;
 
 namespace XboxOn.Tray
 {
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : Window
     {
         private NotifyIcon noticon;
         public MainWindow()
@@ -18,16 +16,13 @@ namespace XboxOn.Tray
             InitializeComponent();
 
             Rect desktopWorkingArea = SystemParameters.WorkArea;
-            this.Left = desktopWorkingArea.Right - this.Width;
-            this.Top = desktopWorkingArea.Bottom - this.Height;
+            Left = desktopWorkingArea.Right - Width;
+            Top = desktopWorkingArea.Bottom - Height;
 
             if (Properties.Settings.Default.LaunchMinimized == true)
             {
-                this.Hide();
+                Hide();
             }
-
-            ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncAll;
-            ThemeManager.Current.SyncTheme();
 
             SystemTray();
         }
@@ -35,7 +30,7 @@ namespace XboxOn.Tray
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            Settings set = new Settings();
+            Settings set = new();
             set.Show();
         }
 
@@ -44,9 +39,9 @@ namespace XboxOn.Tray
 
         public async Task XboxWake(string ipAddress, string liveId, int retries = 5)
         {
-            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            Socket socket = new(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPAddress ip = IPAddress.Parse(ipAddress);
-            IPEndPoint port = new IPEndPoint(ip, 5050);
+            IPEndPoint port = new(ip, 5050);
 
             for (int retry = 0; retry < retries; retry++)
             {
@@ -68,7 +63,7 @@ namespace XboxOn.Tray
                 header[4] = 0x00;
                 header[5] = 0x00;
 
-                using (MemoryStream ms = new MemoryStream(header.Length + payload.Length))
+                using (MemoryStream ms = new(header.Length + payload.Length))
                 {
                     ms.Write(header, 0, header.Length);
                     ms.Write(payload, 0, payload.Length);
@@ -83,7 +78,7 @@ namespace XboxOn.Tray
         private void XboxOn_StateChanged(object sender, EventArgs e)
         {
             if (WindowState == WindowState.Minimized)
-                this.Hide();
+                Hide();
         }
 
         private void XboxOn_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -102,7 +97,7 @@ namespace XboxOn.Tray
                     Properties.Settings.Default.Save();
                 }
             }
-            this.Hide();
+            Hide();
         }
 
         private void SystemTray()
@@ -114,14 +109,14 @@ namespace XboxOn.Tray
             };
             noticon.DoubleClick += delegate (object s, EventArgs e)
             {
-                this.Show();
+                Show();
                 WindowState = WindowState.Normal;
             };
 
-            ContextMenuStrip strip = new ContextMenuStrip();
+            ContextMenuStrip strip = new();
             noticon.ContextMenuStrip = strip;
 
-            strip.Items.Add("Turn on XBox", null, TurnOnFromMenu);
+            strip.Items.Add("Turn on Xbox", null, TurnOnFromMenu);
             strip.Items.Add("Exit", null, ExitEvent);
         }
 

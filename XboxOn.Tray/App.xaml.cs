@@ -1,5 +1,4 @@
-﻿using ControlzEx.Theming;
-using System.Windows;
+﻿using System.Windows;
 
 namespace XboxOn.Tray
 {
@@ -11,9 +10,6 @@ namespace XboxOn.Tray
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-            // Set the application theme to Dark.Green
-            ThemeManager.Current.ChangeTheme(this, Tray.Properties.Settings.Default.Theme == 0 ? "Light.Blue" : "Dark.Blue");
         }
     }
 }
